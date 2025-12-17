@@ -29,10 +29,7 @@ def load_world(path: str) -> list[list[str]]: #Η συνάρτηση δέχετ�
     for r in world:
         for s in r:
             assert s in valid, f"Άκυρο σύμβολο βρέθηκε: {s}. Έγκυρα: {valid}"
-    print("DEBUG: World successfully loaded.")
-    print("DEBUG: First row:", world[0])
-    print("DEBUG: World dimensions:", len(world), "x", len(world[0]))
-
+    
     return world
 
 def print_world(world: list[list[str]], r: int, c: int) -> None: #  Τυπώνει τον κόσμο με το ρομπότ στη θέση (r, c)
@@ -79,18 +76,14 @@ def next_step_sweep(world, r: int, c: int, direction: int): #Υπολογίζε�
     #Συνεχίζει στην ίδια γραμμή, αυξάνοντας/μειώνοντας τη στήλη ανάλογα με το direction
     nr = r
     nc = c + direction
-    new_direction = direction
     
     #Χειρισμός εμποδίων στη στρατηγική Sweep:
     #Εάν η επόμενη θέση είναι εμπόδιο, το ρομπότ μένει στην τρέχουσα θέση
     if world[nr][nc] == OBST:
-        next_r=r+1
-        if next_r>=ROWS:
-            return (r,c,direction)
-        # Το ρομπότ παραμένει στη θέση (r, c)
-        return (next_r, c, direction)
+        return (r, c, direction)
+    return (nr, nc, direction)
         
-    return (nr, nc, new_direction)        
+          
 
 
 def bfs_path_to_nearest_item(world, start: tuple[int, int]) -> list[tuple[int, int]]: # Επιστρέφει τη συντομότερη διαδρομή προς το πλησιέστερο αντικείμενο
@@ -161,8 +154,7 @@ def run(strategy: str, world_path: str):#Κύρια συνάρτηση προσ�
              r, c = nr, nc # Ενημερώνει τη θέση του ρομπότ και πραγματοποιεί την κίνηση.
              steps += 1  # Μετράμε βήμα αν έγινε η κίνηση
         elif (nr, nc) == (r, c) :
-            if strategy.upper() == "BFS":
-                steps += 1 
+            steps += 1 
              # Αν το BFS δεν βρήκε διαδρομή, μένει στη θέση του και δεν μετράει βήμα ή μετράει βήμα αν έγινε κίνηση ή αν το ρομπότ προσπάθησε να κινηθεί  
               # Μετράμε βήμα αν και δεν κινήθηκε (προσπάθεια κίνησης)
 
